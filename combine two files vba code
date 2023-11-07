@@ -27,3 +27,41 @@ Sub GetSheets()
         Filename = Dir()
     Loop
 End Sub
+
+
+
+o combine the personal data and exam data into a single sheet using VBA, you can use a VBA macro to merge the two worksheets. Here's a step-by-step guide:
+
+Press Alt + F11 to open the Visual Basic for Applications (VBA) editor in Excel.
+
+In the VBA editor, click on Insert in the menu and then select Module. This will insert a new module for your VBA code.
+
+In the module, paste the following VBA code:
+Sub CombineData()
+    Dim wsPersonal As Worksheet
+    Dim wsExam As Worksheet
+    Dim wsCombined As Worksheet
+    
+    ' Set references to the worksheets
+    Set wsPersonal = ThisWorkbook.Sheets("PersonalData") ' Replace "PersonalData" with the actual name of your personal data sheet
+    Set wsExam = ThisWorkbook.Sheets("ExamData") ' Replace "ExamData" with the actual name of your exam data sheet
+    
+    ' Add a new worksheet for combined data
+    Set wsCombined = ThisWorkbook.Sheets.Add
+    wsCombined.Name = "CombinedData" ' You can change the name if you prefer
+    
+    ' Copy personal data to combined sheet
+    wsPersonal.UsedRange.Copy Destination:=wsCombined.Cells(1, 1)
+    
+    ' Determine the last row of the combined sheet
+    lastRow = wsCombined.Cells(Rows.Count, 1).End(xlUp).Row
+    
+    ' Copy exam data to combined sheet starting from the row after the last personal data row
+    wsExam.UsedRange.Copy Destination:=wsCombined.Cells(lastRow + 1, 1)
+    
+    ' Clean up
+    Set wsPersonal = Nothing
+    Set wsExam = Nothing
+    Set wsCombined = Nothing
+End Sub
+
