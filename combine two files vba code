@@ -1,0 +1,29 @@
+combine two files vba code just change file path and at end of file path add \
+
+
+Sub GetSheets()
+    ' Updated by Excel Guide
+    Dim Path As String
+    Dim Filename As String
+    
+    ' Set the correct path to the folder containing the Excel files
+    Path = "C:\Users\OM\Desktop\New folder\"
+    
+    ' Make sure the path ends with a backslash (\)
+    If Right(Path, 1) <> "\" Then
+        Path = Path & "\"
+    End If
+    
+    ' Initialize the Filename variable
+    Filename = Dir(Path & "*.xls")
+    
+    ' Loop through Excel files in the specified folder
+    Do While Filename <> ""
+        Workbooks.Open Filename:=Path & Filename, ReadOnly:=True
+        For Each Sheet In ActiveWorkbook.Sheets
+            Sheet.Copy After:=ThisWorkbook.Sheets(1)
+        Next Sheet
+        Workbooks(Filename).Close SaveChanges:=False
+        Filename = Dir()
+    Loop
+End Sub
